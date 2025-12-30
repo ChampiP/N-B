@@ -1,0 +1,364 @@
+.admin-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(26, 10, 31, 0.95);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.admin-panel {
+  background: linear-gradient(145deg, #2d1b3d 0%, #1a0a1f 100%);
+  border: 1px solid rgba(139, 95, 191, 0.3);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid rgba(139, 95, 191, 0.2);
+}
+
+.admin-header h2 {
+  margin: 0;
+  font-family: 'Georgia', serif;
+  color: #f0e6ff;
+  font-size: 1.3rem;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: #8b5fbf;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 5px;
+  transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+  color: #ff6b8a;
+}
+
+.admin-tabs {
+  display: flex;
+  border-bottom: 1px solid rgba(139, 95, 191, 0.2);
+  padding: 0 10px;
+}
+
+.tab {
+  flex: 1;
+  padding: 15px 10px;
+  background: none;
+  border: none;
+  color: #8b5fbf;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-bottom: 2px solid transparent;
+}
+
+.tab:hover {
+  color: #d4a5ff;
+}
+
+.tab.active {
+  color: #f0e6ff;
+  border-bottom-color: #8b5fbf;
+}
+
+.admin-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.tab-content h3 {
+  margin: 0 0 5px;
+  color: #f0e6ff;
+  font-family: 'Georgia', serif;
+}
+
+.tab-description {
+  color: #8b5fbf;
+  font-size: 0.85rem;
+  margin: 0 0 20px;
+}
+
+/* Grid de fotos en admin */
+.admin-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.admin-photo-item {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.admin-photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-actions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  padding: 8px;
+  background: linear-gradient(transparent, rgba(26, 10, 31, 0.9));
+}
+
+.photo-actions button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: transform 0.2s ease;
+}
+
+.photo-actions button:hover {
+  transform: scale(1.1);
+}
+
+.set-hero-btn {
+  background: rgba(248, 180, 217, 0.9);
+}
+
+.delete-btn {
+  background: rgba(255, 107, 138, 0.9);
+}
+
+/* Hero preview */
+.hero-preview {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.current-hero, .no-hero {
+  text-align: center;
+}
+
+.current-hero img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 3px solid #8b5fbf;
+  object-fit: cover;
+}
+
+.current-hero p, .no-hero p {
+  color: #8b5fbf;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.no-hero span {
+  font-size: 4rem;
+  display: block;
+}
+
+.hero-options {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.hero-option {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.hero-option:hover {
+  border-color: #8b5fbf;
+}
+
+.hero-option.selected {
+  border-color: #f8b4d9;
+}
+
+.hero-option img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.selected-badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  background: #f8b4d9;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #1a0a1f;
+}
+
+/* Timeline form */
+.add-event-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.add-event-form input {
+  padding: 12px 15px;
+  background: rgba(139, 95, 191, 0.1);
+  border: 1px solid rgba(139, 95, 191, 0.3);
+  border-radius: 10px;
+  color: #f0e6ff;
+  font-size: 0.9rem;
+}
+
+.add-event-form input::placeholder {
+  color: #6b4f8f;
+}
+
+.add-event-form input:focus {
+  outline: none;
+  border-color: #8b5fbf;
+}
+
+.add-event-btn {
+  padding: 12px;
+  background: linear-gradient(135deg, #8b5fbf 0%, #6b4f8f 100%);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-event-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(139, 95, 191, 0.4);
+}
+
+/* Timeline list */
+.timeline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.empty-message {
+  text-align: center;
+  color: #6b4f8f;
+  padding: 30px;
+}
+
+.timeline-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: rgba(139, 95, 191, 0.1);
+  border-radius: 10px;
+  border-left: 3px solid #8b5fbf;
+}
+
+.event-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.event-date {
+  font-size: 0.75rem;
+  color: #8b5fbf;
+}
+
+.event-title {
+  color: #f0e6ff;
+  font-weight: 500;
+}
+
+.event-desc {
+  font-size: 0.85rem;
+  color: #a88fcd;
+}
+
+.delete-event-btn {
+  background: none;
+  border: none;
+  color: #ff6b8a;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px 10px;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.delete-event-btn:hover {
+  opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .admin-photo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .hero-options {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .tab {
+    font-size: 0.75rem;
+    padding: 12px 5px;
+  }
+}

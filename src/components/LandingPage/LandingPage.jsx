@@ -1,6 +1,11 @@
 import { useState, useEffect, useMemo } from 'react';
 import './LandingPage.css';
 import PhotoUploader from '../PhotoUploader/PhotoUploader';
+import AdminPanel from '../AdminPanel/AdminPanel';
+import DailyMessage from '../DailyMessage/DailyMessage';
+import SpotifyPlaylist from '../SpotifyPlaylist/SpotifyPlaylist';
+import ReasonsCarousel from '../ReasonsCarousel/ReasonsCarousel';
+import SecretMessages from '../SecretMessages/SecretMessages';
 import { getImageUrl } from '../../config/cloudinary';
 import { galleryPhotos } from '../../data/photos';
 
@@ -28,8 +33,41 @@ const LandingPage = () => {
   // Estilos de corazones generados una sola vez
   const heartStyles = useMemo(() => generateHeartStyles(), []);
 
-  // Estado para fotos subidas en esta sesión (temporales hasta que las agregues al código)
-  const [sessionPhotos, setSessionPhotos] = useState([]);
+  // Estado para el panel de admin
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
+
+  // Estado para fotos (guardadas en sessionStorage para persistir en la sesión)
+  const [sessionPhotos, setSessionPhotos] = useState(() => {
+    const saved = sessionStorage.getItem('nb_photos');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // Estado para foto principal
+  const [heroPhoto, setHeroPhoto] = useState(() => {
+    const saved = sessionStorage.getItem('nb_hero');
+    return saved ? JSON.parse(saved) : null;
+  });
+
+  // Estado para línea del tiempo
+  const [timelineEvents, setTimelineEvents] = useState(() => {
+    const saved = sessionStorage.getItem('nb_timeline');
+    return saved ? JSON.parse(saved) : [
+      { id: 1, date: '2025-12-13', title: 'Empezamos a ser novios', description: 'El mejor día de nuestras vidas 💜' }
+    ];
+  });
+
+  // Guardar en sessionStorage
+  useEffect(() => {
+    sessionStorage.setItem('nb_photos', JSON.stringify(sessionPhotos));
+  }, [sessionPhotos]);
+
+  useEffect(() => {
+    sessionStorage.setItem('nb_hero', JSON.stringify(heroPhoto));
+  }, [heroPhoto]);
+
+  useEffect(() => {
+    sessionStorage.setItem('nb_timeline', JSON.stringify(timelineEvents));
+  }, [timelineEvents]);
 
   // Combinar fotos guardadas en código + fotos de la sesión
   const allPhotos = [...galleryPhotos, ...sessionPhotos];
@@ -44,7 +82,6 @@ const LandingPage = () => {
     };
     setSessionPhotos(prev => [...prev, newPhoto]);
     
-    // Mostrar en consola para copiar al archivo photos.js
     console.log('📸 ¡Foto subida! Agrega esto a src/data/photos.js:');
     console.log(`{
   id: ${newPhoto.id},
@@ -56,9 +93,19 @@ const LandingPage = () => {
   };
 
   const handleDeletePhoto = (photoId) => {
-    if (window.confirm('¿Eliminar esta foto?')) {
-      setSessionPhotos(prev => prev.filter(p => p.id !== photoId));
-    }
+    setSessionPhotos(prev => prev.filter(p => p.id !== photoId));
+  };
+
+  const handleSetHeroPhoto = (photo) => {
+    setHeroPhoto(photo);
+  };
+
+  const handleAddTimelineEvent = (event) => {
+    setTimelineEvents(prev => [...prev, event].sort((a, b) => new Date(a.date) - new Date(b.date)));
+  };
+
+  const handleDeleteTimelineEvent = (eventId) => {
+    setTimelineEvents(prev => prev.filter(e => e.id !== eventId));
   };
 
   useEffect(() => {
@@ -123,10 +170,18 @@ const LandingPage = () => {
       {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-frame">
-          <div className="hero-placeholder">
-            <span className="placeholder-icon">📸</span>
-            <p>Nuestra foto favorita irá aquí</p>
-          </div>
+          {heroPhoto ? (
+            <img 
+              src={getImageUrl(heroPhoto.publicId, { width: 400, height: 400 })} 
+              alt="Nuestra foto favorita"
+              className="hero-image"
+            />
+          ) : (
+            <div className="hero-placeholder">
+              <span className="placeholder-icon">📸</span>
+              <p>Nuestra foto favorita irá aquí</p>
+            </div>
+          )}
         </div>
         <div className="hero-text">
           <h2>Samirita & Yo</h2>
@@ -136,10 +191,10 @@ const LandingPage = () => {
 
       {/* Secciones de navegación */}
       <section className="nav-cards">
-        <div className="nav-card" data-section="memories">
-          <div className="card-icon">📷</div>
-          <h3>Recuerdos</h3>
-          <p>Nuestras fotos juntos</p>
+        <div className="nav-card" onClick={() => setIsAdminOpen(true)}>
+          <div className="card-icon">⚙️</div>
+          <h3>Editar Página</h3>
+          <p>Agregar fotos y momentos</p>
           <span className="card-arrow">→</span>
         </div>
 
@@ -164,6 +219,37 @@ const LandingPage = () => {
           <span className="card-arrow">→</span>
         </div>
       </section>
+
+      {/* Razones por las que te amo */}
+      <ReasonsCarousel />
+
+      {/* Mensajes Secretos */}
+      <SecretMessages />
+
+      {/* Línea del Tiempo */}
+      <section className="timeline-section">
+        <h2 className="section-title">
+          <span className="title-line"></span>
+          Nuestra Historia
+          <span className="title-line"></span>
+        </h2>
+        
+        <div className="timeline">
+          {timelineEvents.map((event, index) => (
+            <div key={event.id} className={`timeline-event ${index % 2 === 0 ? 'left' : 'right'}`}>
+              <div className="event-content">
+                <span className="event-date">{new Date(event.date).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                <h4 className="event-title">{event.title}</h4>
+                {event.description && <p className="event-description">{event.description}</p>}
+              </div>
+              <div className="event-dot">💜</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Spotify Playlist */}
+      <SpotifyPlaylist />
 
       {/* Galería de fotos preview */}
       <section className="gallery-preview">
@@ -249,6 +335,23 @@ const LandingPage = () => {
         <p>Hecho con 💜 para Samirita</p>
         <p className="footer-year">2025</p>
       </footer>
+
+      {/* Mensaje del día flotante */}
+      <DailyMessage />
+
+      {/* Panel de administración */}
+      <AdminPanel 
+        isOpen={isAdminOpen}
+        onClose={() => setIsAdminOpen(false)}
+        photos={allPhotos}
+        onAddPhoto={handlePhotoUpload}
+        onDeletePhoto={handleDeletePhoto}
+        heroPhoto={heroPhoto}
+        onSetHeroPhoto={handleSetHeroPhoto}
+        timelineEvents={timelineEvents}
+        onAddTimelineEvent={handleAddTimelineEvent}
+        onDeleteTimelineEvent={handleDeleteTimelineEvent}
+      />
     </div>
   );
 };

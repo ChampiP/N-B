@@ -194,7 +194,7 @@
 
 .letter-container.show {
   opacity: 1;
-  transform: translateY(-180px);
+  transform: translateY(-80px);
   z-index: 10;
   pointer-events: all;
 }
