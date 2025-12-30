@@ -1,10 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import './LandingPage.css';
 import PhotoUploader from '../PhotoUploader/PhotoUploader';
 import { getImageUrl } from '../../config/cloudinary';
+import { galleryPhotos } from '../../data/photos';
 
 // Fecha de inicio: 13 de diciembre 2025 a las 3:00 PM
 const START_DATE = new Date('2025-12-13T15:00:00');
+
+// Generar valores aleatorios una sola vez fuera del render
+const generateHeartStyles = () => {
+  return [...Array(15)].map(() => ({
+    delay: `${Math.random() * 10}s`,
+    x: `${Math.random() * 100}%`,
+    size: `${1 + Math.random() * 1.5}rem`,
+    duration: `${10 + Math.random() * 10}s`
+  }));
+};
 
 const LandingPage = () => {
   const [timeTogether, setTimeTogether] = useState({
@@ -14,30 +25,39 @@ const LandingPage = () => {
     seconds: 0
   });
 
-  // Estado para las fotos (por ahora guardadas localmente)
-  const [photos, setPhotos] = useState(() => {
-    const saved = localStorage.getItem('samirita_photos');
-    return saved ? JSON.parse(saved) : [];
-  });
+  // Estilos de corazones generados una sola vez
+  const heartStyles = useMemo(() => generateHeartStyles(), []);
 
-  // Guardar fotos en localStorage cuando cambien
-  useEffect(() => {
-    localStorage.setItem('samirita_photos', JSON.stringify(photos));
-  }, [photos]);
+  // Estado para fotos subidas en esta sesión (temporales hasta que las agregues al código)
+  const [sessionPhotos, setSessionPhotos] = useState([]);
+
+  // Combinar fotos guardadas en código + fotos de la sesión
+  const allPhotos = [...galleryPhotos, ...sessionPhotos];
 
   const handlePhotoUpload = (result) => {
     const newPhoto = {
       id: Date.now(),
       publicId: result.publicId,
       url: result.url,
-      uploadedAt: new Date().toISOString()
+      title: 'Nueva foto',
+      date: new Date().toISOString().split('T')[0]
     };
-    setPhotos(prev => [...prev, newPhoto]);
+    setSessionPhotos(prev => [...prev, newPhoto]);
+    
+    // Mostrar en consola para copiar al archivo photos.js
+    console.log('📸 ¡Foto subida! Agrega esto a src/data/photos.js:');
+    console.log(`{
+  id: ${newPhoto.id},
+  publicId: '${newPhoto.publicId}',
+  title: 'Tu título aquí',
+  date: '${newPhoto.date}',
+  description: 'Tu descripción aquí 💜'
+},`);
   };
 
   const handleDeletePhoto = (photoId) => {
-    if (confirm('¿Eliminar esta foto?')) {
-      setPhotos(prev => prev.filter(p => p.id !== photoId));
+    if (window.confirm('¿Eliminar esta foto?')) {
+      setSessionPhotos(prev => prev.filter(p => p.id !== photoId));
     }
   };
 
@@ -78,12 +98,12 @@ const LandingPage = () => {
     <div className="landing-page">
       {/* Fondo animado */}
       <div className="bg-hearts">
-        {[...Array(15)].map((_, i) => (
+        {heartStyles.map((style, i) => (
           <span key={i} className="floating-heart" style={{
-            '--delay': `${Math.random() * 10}s`,
-            '--x': `${Math.random() * 100}%`,
-            '--size': `${1 + Math.random() * 1.5}rem`,
-            '--duration': `${10 + Math.random() * 10}s`
+            '--delay': style.delay,
+            '--x': style.x,
+            '--size': style.size,
+            '--duration': style.duration
           }}>💜</span>
         ))}
       </div>
@@ -158,16 +178,17 @@ const LandingPage = () => {
           <PhotoUploader onUploadComplete={handlePhotoUpload} />
           
           {/* Fotos subidas */}
-          {photos.slice(0, 5).map((photo) => (
+          {allPhotos.slice(0, 5).map((photo) => (
             <div key={photo.id} className="gallery-item">
               <img 
                 src={getImageUrl(photo.publicId, { width: 300, height: 300 })} 
-                alt="Recuerdo"
+                alt={photo.title || "Recuerdo"}
                 className="gallery-photo"
               />
               <button 
                 className="delete-photo-btn"
                 onClick={() => handleDeletePhoto(photo.id)}
+                title="Eliminar foto"
               >
                 ✕
               </button>
@@ -175,19 +196,19 @@ const LandingPage = () => {
           ))}
           
           {/* Placeholders si hay menos de 5 fotos */}
-          {photos.length < 5 && [...Array(5 - photos.length)].map((_, i) => (
+          {allPhotos.length < 5 && [...Array(5 - allPhotos.length)].map((_, i) => (
             <div key={`placeholder-${i}`} className="gallery-item">
               <div className="gallery-placeholder">
                 <span>📸</span>
-                <small>Foto {photos.length + i + 2}</small>
+                <small>Foto {allPhotos.length + i + 2}</small>
               </div>
             </div>
           ))}
         </div>
         
-        {photos.length > 5 && (
+        {allPhotos.length > 5 && (
           <button className="view-all-btn">
-            Ver todas las fotos ({photos.length})
+            Ver todas las fotos ({allPhotos.length})
             <span>→</span>
           </button>
         )}

@@ -1,11 +1,23 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import './Envelope.css';
 import Letter from '../Letter/Letter';
+
+// Generar estilos de partículas una sola vez
+const generateParticleStyles = () => {
+  return [...Array(20)].map(() => ({
+    delay: `${Math.random() * 5}s`,
+    x: `${Math.random() * 100}%`,
+    duration: `${3 + Math.random() * 4}s`
+  }));
+};
 
 const Envelope = ({ onContinue }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [letterOut, setLetterOut] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
+
+  // Estilos de partículas generados una sola vez
+  const particleStyles = useMemo(() => generateParticleStyles(), []);
 
   const handleEnvelopeClick = () => {
     if (!isOpen) {
@@ -27,11 +39,11 @@ const Envelope = ({ onContinue }) => {
     <div className={`envelope-scene ${isExiting ? 'exit-swirl' : ''}`}>
       {/* Partículas de fondo */}
       <div className="particles">
-        {[...Array(20)].map((_, i) => (
+        {particleStyles.map((style, i) => (
           <div key={i} className="particle" style={{
-            '--delay': `${Math.random() * 5}s`,
-            '--x': `${Math.random() * 100}%`,
-            '--duration': `${3 + Math.random() * 4}s`
+            '--delay': style.delay,
+            '--x': style.x,
+            '--duration': style.duration
           }}></div>
         ))}
       </div>
