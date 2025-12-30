@@ -1,34 +1,23 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import Envelope from './components/Envelope/Envelope'
+import LandingPage from './components/LandingPage/LandingPage'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [showLanding, setShowLanding] = useState(false)
+
+  const handleContinue = () => {
+    setShowLanding(true)
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className="app">
+      {!showLanding ? (
+        <Envelope onContinue={handleContinue} />
+      ) : (
+        <LandingPage />
+      )}
+    </div>
   )
 }
 

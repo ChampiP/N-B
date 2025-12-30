@@ -1,0 +1,259 @@
+.letter {
+  position: relative;
+  width: 100%;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 0.5s ease;
+}
+
+.letter.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.letter-paper {
+  background: linear-gradient(180deg, #faf5ff 0%, #f0e6ff 100%);
+  border-radius: 8px;
+  padding: 25px 20px;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.2),
+    inset 0 0 20px rgba(139, 95, 191, 0.1);
+  position: relative;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Efecto de papel viejo */
+.letter-paper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 24px,
+      rgba(139, 95, 191, 0.05) 24px,
+      rgba(139, 95, 191, 0.05) 25px
+    );
+  pointer-events: none;
+  border-radius: 8px;
+}
+
+.letter-header {
+  text-align: center;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 2px dashed rgba(139, 95, 191, 0.3);
+}
+
+.letter-date {
+  font-size: 0.75rem;
+  color: #8b5fbf;
+  text-transform: capitalize;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.letter-title {
+  font-family: 'Georgia', serif;
+  font-size: 1.3rem;
+  color: #4a2c6a;
+  margin: 0;
+  font-weight: 600;
+}
+
+.letter-body {
+  flex: 1;
+  padding: 10px 0;
+}
+
+.letter-greeting {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  color: #6b4f8f;
+  margin-bottom: 15px;
+  font-size: 1rem;
+}
+
+.letter-message {
+  font-family: 'Georgia', serif;
+  color: #2d1b3d;
+  line-height: 1.7;
+  font-size: 0.95rem;
+  text-align: justify;
+}
+
+.letter-footer {
+  text-align: right;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(139, 95, 191, 0.2);
+}
+
+.letter-signature {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  color: #6b4f8f;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.letter-heart {
+  font-size: 1.5rem;
+  margin: 5px 0 15px;
+  animation: heartbeat 1.5s infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.1); }
+  50% { transform: scale(1); }
+  75% { transform: scale(1.1); }
+}
+
+/* Botón continuar */
+.continue-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #8b5fbf 0%, #6b4f8f 100%);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-family: 'Georgia', serif;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(139, 95, 191, 0.4);
+}
+
+.continue-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 95, 191, 0.6);
+  background: linear-gradient(135deg, #9b6fcf 0%, #7b5f9f 100%);
+}
+
+.continue-btn svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s ease;
+}
+
+.continue-btn:hover svg {
+  transform: translateX(4px);
+}
+
+/* Decoraciones de esquinas */
+.corner-decoration {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  opacity: 0.6;
+}
+
+.corner-decoration::before,
+.corner-decoration::after {
+  content: '';
+  position: absolute;
+  background: linear-gradient(135deg, #d4a5ff 0%, #f8b4d9 100%);
+}
+
+.top-left {
+  top: -5px;
+  left: -5px;
+}
+.top-left::before {
+  width: 100%;
+  height: 3px;
+  top: 0;
+  left: 0;
+  border-radius: 3px;
+}
+.top-left::after {
+  width: 3px;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border-radius: 3px;
+}
+
+.top-right {
+  top: -5px;
+  right: -5px;
+}
+.top-right::before {
+  width: 100%;
+  height: 3px;
+  top: 0;
+  right: 0;
+  border-radius: 3px;
+}
+.top-right::after {
+  width: 3px;
+  height: 100%;
+  top: 0;
+  right: 0;
+  border-radius: 3px;
+}
+
+.bottom-left {
+  bottom: -5px;
+  left: -5px;
+}
+.bottom-left::before {
+  width: 100%;
+  height: 3px;
+  bottom: 0;
+  left: 0;
+  border-radius: 3px;
+}
+.bottom-left::after {
+  width: 3px;
+  height: 100%;
+  bottom: 0;
+  left: 0;
+  border-radius: 3px;
+}
+
+.bottom-right {
+  bottom: -5px;
+  right: -5px;
+}
+.bottom-right::before {
+  width: 100%;
+  height: 3px;
+  bottom: 0;
+  right: 0;
+  border-radius: 3px;
+}
+.bottom-right::after {
+  width: 3px;
+  height: 100%;
+  bottom: 0;
+  right: 0;
+  border-radius: 3px;
+}
+
+/* Responsive */
+@media (max-width: 400px) {
+  .letter-paper {
+    padding: 20px 15px;
+    min-height: 250px;
+  }
+  
+  .letter-title {
+    font-size: 1.1rem;
+  }
+  
+  .letter-message {
+    font-size: 0.9rem;
+  }
+}
