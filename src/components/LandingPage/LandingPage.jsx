@@ -6,6 +6,7 @@ import DailyMessage from '../DailyMessage/DailyMessage';
 import SpotifyPlaylist from '../SpotifyPlaylist/SpotifyPlaylist';
 import ReasonsCarousel from '../ReasonsCarousel/ReasonsCarousel';
 import SecretMessages from '../SecretMessages/SecretMessages';
+import InstallApp from '../InstallApp/InstallApp';
 import { getImageUrl } from '../../config/cloudinary';
 import { galleryPhotos } from '../../data/photos';
 
@@ -329,6 +330,9 @@ const LandingPage = () => {
           <p className="time-start-date">Desde el 13 de diciembre de 2025</p>
         </div>
       </section>
+
+      {/* Instalar App y Notificaciones */}
+      <InstallApp />
 
       {/* Footer */}
       <footer className="landing-footer">

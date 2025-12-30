@@ -35,8 +35,8 @@ export const NotificationService = {
   sendLocalNotification: (title, options = {}) => {
     if (Notification.permission === 'granted') {
       const notification = new Notification(title, {
-        icon: '/favicon.ico',
-        badge: '/favicon.ico',
+        icon: '/icon-192.png',
+        badge: '/icon-192.png',
         vibrate: [100, 50, 100],
         ...options
       });
@@ -49,6 +49,97 @@ export const NotificationService = {
       return notification;
     }
     return null;
+  },
+
+  // Mensajes de amor para notificaciones diarias
+  loveMessages: [
+    "💜 Buenos días mi amor, tu carta de hoy te espera...",
+    "💕 Tengo algo especial para ti hoy...",
+    "✨ Un nuevo mensaje de amor te aguarda...",
+    "🌸 Hoy te escribí algo bonito...",
+    "💌 Tu carta diaria está lista...",
+    "🥰 Abre tu regalo de hoy...",
+    "💜 Un pedacito de mi corazón te espera...",
+    "🌟 Hay algo esperándote con mucho amor..."
+  ],
+
+  // Programar notificación diaria
+  scheduleDailyNotification: (hour = 8, minute = 0) => {
+    // Guardar la hora configurada
+    localStorage.setItem('nb_notification_hour', hour);
+    localStorage.setItem('nb_notification_minute', minute);
+    localStorage.setItem('nb_notifications_enabled', 'true');
+    
+    // Calcular tiempo hasta la próxima notificación
+    const now = new Date();
+    const scheduledTime = new Date();
+    scheduledTime.setHours(hour, minute, 0, 0);
+    
+    // Si ya pasó la hora hoy, programar para mañana
+    if (now > scheduledTime) {
+      scheduledTime.setDate(scheduledTime.getDate() + 1);
+    }
+    
+    const timeUntilNotification = scheduledTime - now;
+    
+    console.log(`⏰ Notificación programada para: ${scheduledTime.toLocaleString()}`);
+    console.log(`⏱️ Tiempo restante: ${Math.round(timeUntilNotification / 1000 / 60)} minutos`);
+    
+    // Programar la notificación
+    setTimeout(() => {
+      NotificationService.sendDailyLoveNotification();
+      // Reprogramar para el día siguiente
+      NotificationService.scheduleDailyNotification(hour, minute);
+    }, timeUntilNotification);
+    
+    return scheduledTime;
+  },
+
+  // Enviar notificación de amor diaria
+  sendDailyLoveNotification: () => {
+    const lastNotificationDate = localStorage.getItem('nb_last_daily_notification');
+    const today = new Date().toDateString();
+    
+    // Solo enviar una notificación por día
+    if (lastNotificationDate === today) {
+      console.log('Ya se envió la notificación de hoy');
+      return;
+    }
+    
+    const randomMessage = NotificationService.loveMessages[
+      Math.floor(Math.random() * NotificationService.loveMessages.length)
+    ];
+    
+    NotificationService.sendLocalNotification('💜 Samirita', {
+      body: randomMessage,
+      tag: 'daily-love',
+      requireInteraction: true,
+      actions: [
+        { action: 'open', title: 'Ver mi carta 💌' }
+      ]
+    });
+    
+    localStorage.setItem('nb_last_daily_notification', today);
+    console.log('💜 Notificación diaria enviada:', randomMessage);
+  },
+
+  // Inicializar notificaciones diarias si están habilitadas
+  initDailyNotifications: () => {
+    const enabled = localStorage.getItem('nb_notifications_enabled') === 'true';
+    if (enabled && Notification.permission === 'granted') {
+      const hour = parseInt(localStorage.getItem('nb_notification_hour') || '8');
+      const minute = parseInt(localStorage.getItem('nb_notification_minute') || '0');
+      NotificationService.scheduleDailyNotification(hour, minute);
+      return true;
+    }
+    return false;
+  },
+
+  // Desactivar notificaciones diarias
+  disableDailyNotifications: () => {
+    localStorage.removeItem('nb_notifications_enabled');
+    localStorage.removeItem('nb_notification_hour');
+    localStorage.removeItem('nb_notification_minute');
   },
 
   // Verificar si hay mensajes secretos nuevos y notificar
@@ -102,6 +193,9 @@ export const NotificationService = {
   startPeriodicCheck: (intervalMinutes = 60) => {
     // Verificar inmediatamente
     NotificationService.checkSecretMessages();
+    
+    // Inicializar notificaciones diarias
+    NotificationService.initDailyNotifications();
     
     // Verificar periódicamente
     setInterval(() => {

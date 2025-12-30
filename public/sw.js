@@ -2,6 +2,23 @@
 
 const CACHE_NAME = 'samirita-v1';
 
+// Mensajes de amor para las notificaciones diarias
+const loveMessages = [
+  "💜 Buenos días mi amor, tu carta de hoy te espera...",
+  "💕 Tengo algo especial para ti hoy...",
+  "✨ Un nuevo mensaje de amor te aguarda...",
+  "🌸 Hoy te escribí algo bonito...",
+  "💌 Tu carta diaria está lista...",
+  "🥰 Abre tu regalo de hoy...",
+  "💜 Un pedacito de mi corazón te espera...",
+  "🌟 Hay algo esperándote con mucho amor..."
+];
+
+// Obtener mensaje random
+const getRandomMessage = () => {
+  return loveMessages[Math.floor(Math.random() * loveMessages.length)];
+};
+
 // Archivos a cachear para funcionamiento offline
 const urlsToCache = [
   '/',

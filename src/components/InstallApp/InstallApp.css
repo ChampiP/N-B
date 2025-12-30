@@ -1,0 +1,176 @@
+.install-app-section {
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #2d1b4e 0%, #1a0a2e 100%);
+}
+
+.install-card {
+  max-width: 400px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #3d2066 0%, #2d1b4e 100%);
+  border-radius: 20px;
+  padding: 30px 25px;
+  text-align: center;
+  border: 2px solid rgba(248, 180, 217, 0.3);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    0 0 30px rgba(139, 95, 191, 0.2);
+}
+
+.install-card h3 {
+  color: #fff;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+.install-card > p {
+  color: #d4a5ff;
+  margin-bottom: 20px;
+}
+
+.install-btn {
+  background: linear-gradient(135deg, #8b5fbf 0%, #6b4f8f 100%);
+  border: none;
+  color: white;
+  padding: 15px 30px;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.install-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(139, 95, 191, 0.5);
+}
+
+.installed-badge {
+  background: rgba(46, 204, 113, 0.2);
+  color: #2ecc71;
+  padding: 12px 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.notification-settings {
+  margin: 20px 0;
+}
+
+.enable-section p {
+  color: #f8b4d9;
+  margin-bottom: 15px;
+}
+
+.hour-select {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(248, 180, 217, 0.3);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 1rem;
+  margin-bottom: 15px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.hour-select option {
+  background: #2d1b4e;
+  color: white;
+}
+
+.enable-btn {
+  background: linear-gradient(135deg, #f8b4d9 0%, #ff6b9d 100%);
+  border: none;
+  color: #2d1b4e;
+  padding: 15px 25px;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.enable-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(248, 180, 217, 0.4);
+}
+
+.enabled-section {
+  background: rgba(139, 95, 191, 0.2);
+  padding: 15px;
+  border-radius: 15px;
+}
+
+.enabled-text {
+  color: #8b5fbf;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.settings-toggle {
+  background: transparent;
+  border: 1px solid rgba(248, 180, 217, 0.3);
+  color: #d4a5ff;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.settings-toggle:hover {
+  background: rgba(248, 180, 217, 0.1);
+}
+
+.settings-panel {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.disable-btn {
+  background: rgba(231, 76, 60, 0.2);
+  border: 1px solid rgba(231, 76, 60, 0.4);
+  color: #e74c3c;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.disable-btn:hover {
+  background: rgba(231, 76, 60, 0.3);
+}
+
+.install-hint {
+  color: #9b7fc4;
+  font-size: 0.85rem;
+  margin-top: 20px;
+  font-style: italic;
+}
+
+/* Animación de brillo */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.enable-btn {
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .install-card {
+    padding: 25px 20px;
+  }
+  
+  .install-card h3 {
+    font-size: 1.2rem;
+  }
+}
