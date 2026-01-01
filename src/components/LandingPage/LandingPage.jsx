@@ -10,6 +10,11 @@ import InstallApp from '../InstallApp/InstallApp';
 import { getImageUrl } from '../../config/imageUpload';
 import { galleryPhotos } from '../../data/photos';
 import useScrollReveal, { useParallax } from '../../hooks/useScrollReveal';
+import { 
+  savePhoto, deletePhoto as deletePhotoFromDB, subscribeToPhotos,
+  saveHeroPhoto, subscribeToHeroPhoto,
+  saveTimelineEvent, deleteTimelineEvent as deleteEventFromDB, subscribeToTimeline
+} from '../../config/firebase';
 
 // Fecha de inicio: 13 de diciembre 2025 a las 3:00 PM
 const START_DATE = new Date('2025-12-13T15:00:00');
@@ -51,43 +56,50 @@ const LandingPage = () => {
   // Estado para lightbox de fotos
   const [lightboxPhoto, setLightboxPhoto] = useState(null);
 
-  // Estado para fotos (guardadas en sessionStorage para persistir en la sesión)
-  const [sessionPhotos, setSessionPhotos] = useState(() => {
-    const saved = sessionStorage.getItem('nb_photos');
-    return saved ? JSON.parse(saved) : [];
-  });
+  // Estado para fotos (sincronizadas con Firebase)
+  const [sessionPhotos, setSessionPhotos] = useState([]);
 
   // Estado para foto principal
-  const [heroPhoto, setHeroPhoto] = useState(() => {
-    const saved = sessionStorage.getItem('nb_hero');
-    return saved ? JSON.parse(saved) : null;
-  });
+  const [heroPhoto, setHeroPhoto] = useState(null);
 
   // Estado para línea del tiempo
-  const [timelineEvents, setTimelineEvents] = useState(() => {
-    const saved = sessionStorage.getItem('nb_timeline');
-    return saved ? JSON.parse(saved) : [
-      { id: 1, date: '2025-12-13', title: 'Empezamos a ser novios', description: 'El mejor día 💜' }
-    ];
-  });
+  const [timelineEvents, setTimelineEvents] = useState([]);
 
-  // Guardar en sessionStorage
+  // Estado de carga
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Suscribirse a Firebase en tiempo real
   useEffect(() => {
-    sessionStorage.setItem('nb_photos', JSON.stringify(sessionPhotos));
-  }, [sessionPhotos]);
+    // Suscribirse a fotos
+    const unsubPhotos = subscribeToPhotos((photos) => {
+      setSessionPhotos(photos);
+    });
 
-  useEffect(() => {
-    sessionStorage.setItem('nb_hero', JSON.stringify(heroPhoto));
-  }, [heroPhoto]);
+    // Suscribirse a foto principal
+    const unsubHero = subscribeToHeroPhoto((photo) => {
+      setHeroPhoto(photo);
+    });
 
-  useEffect(() => {
-    sessionStorage.setItem('nb_timeline', JSON.stringify(timelineEvents));
-  }, [timelineEvents]);
+    // Suscribirse a timeline
+    const unsubTimeline = subscribeToTimeline((events) => {
+      setTimelineEvents(events.length > 0 ? events : [
+        { id: 1, date: '2025-12-13', title: 'Empezamos a ser novios', description: 'El mejor día 💜' }
+      ]);
+      setIsLoading(false);
+    });
 
-  // Combinar fotos guardadas en código + fotos de la sesión
+    // Limpiar suscripciones
+    return () => {
+      unsubPhotos();
+      unsubHero();
+      unsubTimeline();
+    };
+  }, []);
+
+  // Combinar fotos guardadas en código + fotos de Firebase
   const allPhotos = [...galleryPhotos, ...sessionPhotos];
 
-  const handlePhotoUpload = (result) => {
+  const handlePhotoUpload = async (result) => {
     const newPhoto = {
       id: Date.now(),
       publicId: result.publicId,
@@ -95,39 +107,30 @@ const LandingPage = () => {
       title: 'Nueva foto',
       date: new Date().toISOString().split('T')[0]
     };
-    setSessionPhotos(prev => [...prev, newPhoto]);
     
-    console.log('📸 ¡Foto subida! Agrega esto a src/data/photos.js:');
-    console.log(`{
-  id: ${newPhoto.id},
-  publicId: '${newPhoto.publicId}',
-  title: 'Tu título aquí',
-  date: '${newPhoto.date}',
-  description: 'Tu 💜'
-},`);
+    // Guardar en Firebase
+    await savePhoto(newPhoto);
+    console.log('📸 ¡Foto subida y guardada en Firebase!');
   };
 
-  const handleDeletePhoto = (photoId) => {
-    setSessionPhotos(prev => prev.filter(p => p.id !== photoId));
+  const handleDeletePhoto = async (photoId) => {
+    await deletePhotoFromDB(photoId);
   };
 
-  const handleSetHeroPhoto = (photo) => {
-    setHeroPhoto(photo);
+  const handleSetHeroPhoto = async (photo) => {
+    await saveHeroPhoto(photo);
   };
 
-  const handleAddTimelineEvent = (event) => {
-    setTimelineEvents(prev => [...prev, event].sort((a, b) => new Date(a.date) - new Date(b.date)));
+  const handleAddTimelineEvent = async (event) => {
+    await saveTimelineEvent(event);
   };
 
-  const handleDeleteTimelineEvent = (eventId) => {
-    setTimelineEvents(prev => prev.filter(e => e.id !== eventId));
+  const handleDeleteTimelineEvent = async (eventId) => {
+    await deleteEventFromDB(eventId);
   };
 
-  const handleEditTimelineEvent = (editedEvent) => {
-    setTimelineEvents(prev => 
-      prev.map(e => e.id === editedEvent.id ? editedEvent : e)
-        .sort((a, b) => new Date(a.date) - new Date(b.date))
-    );
+  const handleEditTimelineEvent = async (editedEvent) => {
+    await saveTimelineEvent(editedEvent);
   };
 
   // Función para scroll suave a secciones
