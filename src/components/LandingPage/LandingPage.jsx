@@ -7,7 +7,6 @@ import SpotifyPlaylist from '../SpotifyPlaylist/SpotifyPlaylist';
 import ReasonsCarousel from '../ReasonsCarousel/ReasonsCarousel';
 import SecretMessages from '../SecretMessages/SecretMessages';
 import InstallApp from '../InstallApp/InstallApp';
-import { getImageUrl } from '../../config/imageUpload';
 import { galleryPhotos } from '../../data/photos';
 import useScrollReveal, { useParallax } from '../../hooks/useScrollReveal';
 import { 
@@ -210,7 +209,7 @@ const LandingPage = () => {
         <div className="hero-frame">
           {heroPhoto ? (
             <img 
-              src={getImageUrl(heroPhoto.publicId, { width: 400, height: 400 })} 
+              src={heroPhoto.url || heroPhoto.displayUrl} 
               alt="Nuestra foto favorita"
               className="hero-image"
             />
@@ -315,7 +314,7 @@ const LandingPage = () => {
           {allPhotos.slice(0, 5).map((photo) => (
             <div key={photo.id} className="gallery-item" onClick={() => setLightboxPhoto(photo)}>
               <img 
-                src={getImageUrl(photo.publicId, { width: 300, height: 300 })} 
+                src={photo.url || photo.displayUrl || photo.thumbnail} 
                 alt={photo.title || "Recuerdo"}
                 className="gallery-photo"
               />
@@ -402,7 +401,7 @@ const LandingPage = () => {
           <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
             <button className="lightbox-close" onClick={() => setLightboxPhoto(null)}>✕</button>
             <img 
-              src={getImageUrl(lightboxPhoto.publicId, { width: 1200, height: 1200 })} 
+              src={lightboxPhoto.url || lightboxPhoto.displayUrl} 
               alt={lightboxPhoto.title || "Foto"}
               className="lightbox-image"
             />

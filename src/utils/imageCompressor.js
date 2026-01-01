@@ -1,5 +1,5 @@
-// Comprimir imagen antes de subir
-export const compressImage = (file, maxWidth = 1920, quality = 0.8) => {
+// Comprimir imagen antes de subir (calidad reducida para almacenar más fotos)
+export const compressImage = (file, maxWidth = 1024, quality = 0.6) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     
@@ -53,25 +53,25 @@ export const compressImage = (file, maxWidth = 1920, quality = 0.8) => {
 };
 
 // Comprimir con ajuste automático de calidad para archivos muy grandes
-export const smartCompress = async (file, targetSizeMB = 5) => {
+export const smartCompress = async (file, targetSizeMB = 1) => {
   const targetSize = targetSizeMB * 1024 * 1024;
   
-  // Si ya es menor al tamaño objetivo, solo redimensionar
+  // Si ya es menor al tamaño objetivo, solo redimensionar ligeramente
   if (file.size <= targetSize) {
-    return compressImage(file, 1920, 0.9);
+    return compressImage(file, 1024, 0.7);
   }
   
   // Para archivos grandes, comprimir más agresivamente
-  let quality = 0.8;
-  let maxWidth = 1920;
+  let quality = 0.6;
+  let maxWidth = 1024;
   
   // Ajustar según el tamaño
   if (file.size > 20 * 1024 * 1024) {
-    quality = 0.6;
-    maxWidth = 1600;
+    quality = 0.4;
+    maxWidth = 800;
   } else if (file.size > 10 * 1024 * 1024) {
-    quality = 0.7;
-    maxWidth = 1800;
+    quality = 0.5;
+    maxWidth = 900;
   }
   
   return compressImage(file, maxWidth, quality);

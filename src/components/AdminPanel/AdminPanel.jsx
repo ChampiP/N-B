@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import './AdminPanel.css';
 import PhotoUploader from '../PhotoUploader/PhotoUploader';
-import { getImageUrl } from '../../config/imageUpload';
 
 const AdminPanel = ({ 
   isOpen, 
@@ -89,7 +88,7 @@ const AdminPanel = ({
                 {photos.map((photo) => (
                   <div key={photo.id} className="admin-photo-item">
                     <img 
-                      src={getImageUrl(photo.publicId, { width: 150, height: 150 })} 
+                      src={photo.url || photo.thumbnail || photo.displayUrl} 
                       alt={photo.title || "Foto"}
                     />
                     <div className="photo-actions">
@@ -124,7 +123,7 @@ const AdminPanel = ({
                 {heroPhoto ? (
                   <div className="current-hero">
                     <img 
-                      src={getImageUrl(heroPhoto.publicId, { width: 300, height: 300 })} 
+                      src={heroPhoto.url || heroPhoto.displayUrl} 
                       alt="Foto principal"
                     />
                     <p>Foto actual</p>
@@ -146,7 +145,7 @@ const AdminPanel = ({
                     onClick={() => onSetHeroPhoto(photo)}
                   >
                     <img 
-                      src={getImageUrl(photo.publicId, { width: 100, height: 100 })} 
+                      src={photo.url || photo.thumbnail || photo.displayUrl} 
                       alt={photo.title || "Foto"}
                     />
                     {heroPhoto?.id === photo.id && <span className="selected-badge">✓</span>}
