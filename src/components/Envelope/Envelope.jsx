@@ -67,7 +67,7 @@ const Envelope = ({ onContinue }) => {
           {/* Parte frontal del sobre */}
           <div className="envelope-front">
             <div className="envelope-heart">💜</div>
-            <p className="envelope-name">Para: Shamira</p>
+            <p className="envelope-name">Para: la dueña de mi corazon</p>
           </div>
         </div>
 
