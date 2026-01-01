@@ -1,6 +1,6 @@
 /* global clients */
 
-const CACHE_NAME = 'samirita-v1';
+const CACHE_NAME = 'shamira-v1';
 
 // Mensajes de amor para las notificaciones diarias
 const loveMessages = [
@@ -51,9 +51,9 @@ self.addEventListener('activate', (event) => {
 // Manejar notificaciones push
 self.addEventListener('push', (event) => {
   const options = {
-    body: event.data ? event.data.text() : '¡Tienes un mensaje secreto desbloqueado! 💜',
-    icon: '/favicon.ico',
-    badge: '/favicon.ico',
+    body: event.data ? event.data.text() : getRandomMessage(),
+    icon: '/icon-192.svg',
+    badge: '/icon-192.svg',
     vibrate: [100, 50, 100],
     data: {
       url: '/'
@@ -65,7 +65,7 @@ self.addEventListener('push', (event) => {
   };
 
   event.waitUntil(
-    self.registration.showNotification('💜 Samirita', options)
+    self.registration.showNotification('💜 Shamira', options)
   );
 });
 

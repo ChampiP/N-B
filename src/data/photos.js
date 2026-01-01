@@ -16,7 +16,7 @@ export const galleryPhotos = [
 // Foto principal del hero
 export const heroPhoto = {
   publicId: null, // Pon aquí el publicId de la foto principal
-  title: 'Samirita & Yo'
+  title: 'Shamira & Yo'
 };
 
 // Fotos para la línea del tiempo

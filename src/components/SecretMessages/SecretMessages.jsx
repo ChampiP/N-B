@@ -30,7 +30,7 @@ const secretMessages = [
     id: 4,
     unlockDate: '2026-02-14',
     title: '💝 San Valentín',
-    message: 'Feliz día del amor, mi Samirita. No necesito un día especial para decirte cuánto te amo, pero aprovecho para recordarte que eres lo mejor de mi vida. Te amo más que ayer y menos que mañana 💝',
+    message: 'Feliz día del amor, mi Shamira. No necesito un día especial para decirte cuánto te amo, pero aprovecho para recordarte que eres lo mejor de mi vida. Te amo más que ayer y menos que mañana 💝',
     emoji: '💝'
   },
   {
@@ -44,7 +44,7 @@ const secretMessages = [
     id: 6,
     unlockDate: '2026-12-13',
     title: '🎂 Un Año de Amor',
-    message: '¡UN AÑO! No puedo creer lo rápido que pasó. 365 días de amor puro. Gracias por cada momento, cada risa, cada abrazo. Eres mi todo, Samirita. Te amo infinitamente. ¡Por una eternidad más! 💜🎂💕',
+    message: '¡UN AÑO! No puedo creer lo rápido que pasó. 365 días de amor puro. Gracias por cada momento, cada risa, cada abrazo. Eres mi todo, Shamira. Te amo infinitamente. ¡Por una eternidad más! 💜🎂💕',
     emoji: '🎂'
   }
 ];
@@ -52,12 +52,18 @@ const secretMessages = [
 const SecretMessages = () => {
   const [selectedMessage, setSelectedMessage] = useState(null);
 
+  // Función para parsear fecha sin problemas de zona horaria
+  const parseDate = (dateStr) => {
+    const [year, month, day] = dateStr.split('-').map(Number);
+    return new Date(year, month - 1, day);
+  };
+
   // Calcular fecha de hoy una vez
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
   const isUnlocked = (unlockDate) => {
-    const unlock = new Date(unlockDate);
+    const unlock = parseDate(unlockDate);
     unlock.setHours(0, 0, 0, 0);
     return today >= unlock;
   };
@@ -83,7 +89,7 @@ const SecretMessages = () => {
   };
 
   const getDaysUntil = (unlockDate) => {
-    const unlock = new Date(unlockDate);
+    const unlock = parseDate(unlockDate);
     unlock.setHours(0, 0, 0, 0);
     const diff = unlock - today;
     return Math.ceil(diff / (1000 * 60 * 60 * 24));
@@ -154,7 +160,7 @@ const SecretMessages = () => {
               </h4>
               
               <p className="secret-date">
-                {new Date(msg.unlockDate).toLocaleDateString('es-ES', { 
+                {parseDate(msg.unlockDate).toLocaleDateString('es-ES', { 
                   day: 'numeric', 
                   month: 'long', 
                   year: 'numeric' 
@@ -184,7 +190,7 @@ const SecretMessages = () => {
             <div className="modal-emoji">{selectedMessage.emoji}</div>
             <h3 className="modal-title">{selectedMessage.title}</h3>
             <p className="modal-date">
-              {new Date(selectedMessage.unlockDate).toLocaleDateString('es-ES', {
+              {parseDate(selectedMessage.unlockDate).toLocaleDateString('es-ES', {
                 weekday: 'long',
                 day: 'numeric',
                 month: 'long',

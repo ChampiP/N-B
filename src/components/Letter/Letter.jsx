@@ -14,7 +14,7 @@ const Letter = ({ onContinue, isVisible }) => {
         </div>
         
         <div className="letter-body">
-          <p className="letter-greeting">Mi querida Samirita,</p>
+          <p className="letter-greeting">Mi querida Shamira,</p>
           <p className="letter-message">{todayMessage.message}</p>
         </div>
         

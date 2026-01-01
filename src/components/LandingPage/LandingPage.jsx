@@ -9,6 +9,7 @@ import SecretMessages from '../SecretMessages/SecretMessages';
 import InstallApp from '../InstallApp/InstallApp';
 import { getImageUrl } from '../../config/cloudinary';
 import { galleryPhotos } from '../../data/photos';
+import useScrollReveal, { useParallax } from '../../hooks/useScrollReveal';
 
 // Fecha de inicio: 13 de diciembre 2025 a las 3:00 PM
 const START_DATE = new Date('2025-12-13T15:00:00');
@@ -31,11 +32,24 @@ const LandingPage = () => {
     seconds: 0
   });
 
+  // Scroll reveal para cada sección
+  const [heroRef, heroVisible] = useScrollReveal(0.2);
+  const [navRef, navVisible] = useScrollReveal(0.1);
+  const [timelineRef, timelineVisible] = useScrollReveal(0.1);
+  const [galleryRef, galleryVisible] = useScrollReveal(0.1);
+  const [timeRef, timeVisible] = useScrollReveal(0.2);
+  
+  // Parallax
+  const scrollY = useParallax();
+
   // Estilos de corazones generados una sola vez
   const heartStyles = useMemo(() => generateHeartStyles(), []);
 
   // Estado para el panel de admin
   const [isAdminOpen, setIsAdminOpen] = useState(false);
+  
+  // Estado para lightbox de fotos
+  const [lightboxPhoto, setLightboxPhoto] = useState(null);
 
   // Estado para fotos (guardadas en sessionStorage para persistir en la sesión)
   const [sessionPhotos, setSessionPhotos] = useState(() => {
@@ -53,7 +67,7 @@ const LandingPage = () => {
   const [timelineEvents, setTimelineEvents] = useState(() => {
     const saved = sessionStorage.getItem('nb_timeline');
     return saved ? JSON.parse(saved) : [
-      { id: 1, date: '2025-12-13', title: 'Empezamos a ser novios', description: 'El mejor día de nuestras vidas 💜' }
+      { id: 1, date: '2025-12-13', title: 'Empezamos a ser novios', description: 'El mejor día 💜' }
     ];
   });
 
@@ -89,7 +103,7 @@ const LandingPage = () => {
   publicId: '${newPhoto.publicId}',
   title: 'Tu título aquí',
   date: '${newPhoto.date}',
-  description: 'Tu descripción aquí 💜'
+  description: 'Tu 💜'
 },`);
   };
 
@@ -109,6 +123,20 @@ const LandingPage = () => {
     setTimelineEvents(prev => prev.filter(e => e.id !== eventId));
   };
 
+  const handleEditTimelineEvent = (editedEvent) => {
+    setTimelineEvents(prev => 
+      prev.map(e => e.id === editedEvent.id ? editedEvent : e)
+        .sort((a, b) => new Date(a.date) - new Date(b.date))
+    );
+  };
+
+  // Función para scroll suave a secciones
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
   useEffect(() => {
     const calculateTime = () => {
       const now = new Date();
@@ -144,7 +172,13 @@ const LandingPage = () => {
 
   return (
     <div className="landing-page">
-      {/* Fondo animado */}
+      {/* Fondo animado con gradiente */}
+      <div className="animated-bg"></div>
+      
+      {/* Fondo parallax */}
+      <div className="parallax-bg" style={{ transform: `translateY(${scrollY * 0.3}px)` }}></div>
+      
+      {/* Corazones flotantes */}
       <div className="bg-hearts">
         {heartStyles.map((style, i) => (
           <span key={i} className="floating-heart" style={{
@@ -156,8 +190,8 @@ const LandingPage = () => {
         ))}
       </div>
 
-      {/* Header */}
-      <header className="landing-header">
+      {/* Header con parallax */}
+      <header className="landing-header" style={{ transform: `translateY(${scrollY * 0.1}px)` }}>
         <div className="header-content">
           <h1 className="main-title">
             <span className="title-heart">💜</span>
@@ -168,8 +202,8 @@ const LandingPage = () => {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="hero-section">
+      {/* Hero Section con scroll reveal */}
+      <section ref={heroRef} className={`hero-section scroll-reveal ${heroVisible ? 'visible' : ''}`}>
         <div className="hero-frame">
           {heroPhoto ? (
             <img 
@@ -185,35 +219,35 @@ const LandingPage = () => {
           )}
         </div>
         <div className="hero-text">
-          <h2>Samirita & Yo</h2>
+          <h2>Shamira & Yo</h2>
           <p className="hero-quote">"Cada momento contigo es un tesoro"</p>
         </div>
       </section>
 
-      {/* Secciones de navegación */}
-      <section className="nav-cards">
-        <div className="nav-card" onClick={() => setIsAdminOpen(true)}>
+      {/* Secciones de navegación con scroll reveal y hover 3D */}
+      <section ref={navRef} className={`nav-cards scroll-reveal ${navVisible ? 'visible' : ''}`}>
+        <div className="nav-card card-3d" onClick={() => setIsAdminOpen(true)}>
           <div className="card-icon">⚙️</div>
           <h3>Editar Página</h3>
           <p>Agregar fotos y momentos</p>
           <span className="card-arrow">→</span>
         </div>
 
-        <div className="nav-card" data-section="timeline">
+        <div className="nav-card card-3d" onClick={() => scrollToSection('timeline-section')}>
           <div className="card-icon">📅</div>
           <h3>Nuestra Línea del Tiempo</h3>
           <p>Momentos especiales</p>
           <span className="card-arrow">→</span>
         </div>
 
-        <div className="nav-card" data-section="reasons">
+        <div className="nav-card card-3d" onClick={() => scrollToSection('reasons-section')}>
           <div className="card-icon">💕</div>
           <h3>Razones</h3>
           <p>Por qué te amo</p>
           <span className="card-arrow">→</span>
         </div>
 
-        <div className="nav-card" data-section="music">
+        <div className="nav-card card-3d" onClick={() => scrollToSection('spotify-section')}>
           <div className="card-icon">🎵</div>
           <h3>Nuestras Canciones</h3>
           <p>La playlist de nosotros</p>
@@ -222,13 +256,15 @@ const LandingPage = () => {
       </section>
 
       {/* Razones por las que te amo */}
-      <ReasonsCarousel />
+      <div id="reasons-section">
+        <ReasonsCarousel />
+      </div>
 
       {/* Mensajes Secretos */}
       <SecretMessages />
 
       {/* Línea del Tiempo */}
-      <section className="timeline-section">
+      <section id="timeline-section" ref={timelineRef} className={`timeline-section scroll-reveal ${timelineVisible ? 'visible' : ''}`}>
         <h2 className="section-title">
           <span className="title-line"></span>
           Nuestra Historia
@@ -236,24 +272,32 @@ const LandingPage = () => {
         </h2>
         
         <div className="timeline">
-          {timelineEvents.map((event, index) => (
-            <div key={event.id} className={`timeline-event ${index % 2 === 0 ? 'left' : 'right'}`}>
-              <div className="event-content">
-                <span className="event-date">{new Date(event.date).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                <h4 className="event-title">{event.title}</h4>
-                {event.description && <p className="event-description">{event.description}</p>}
+          {timelineEvents.map((event, index) => {
+            // Parsear fecha sin problemas de zona horaria
+            const [year, month, day] = event.date.split('-').map(Number);
+            const eventDate = new Date(year, month - 1, day);
+            
+            return (
+              <div key={event.id} className={`timeline-event ${index % 2 === 0 ? 'left' : 'right'}`}>
+                <div className="event-content">
+                  <span className="event-date">{eventDate.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                  <h4 className="event-title">{event.title}</h4>
+                  {event.description && <p className="event-description">{event.description}</p>}
+                </div>
+                <div className="event-dot">💜</div>
               </div>
-              <div className="event-dot">💜</div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
       {/* Spotify Playlist */}
-      <SpotifyPlaylist />
+      <div id="spotify-section">
+        <SpotifyPlaylist />
+      </div>
 
       {/* Galería de fotos preview */}
-      <section className="gallery-preview">
+      <section id="gallery-section" ref={galleryRef} className={`gallery-preview scroll-reveal ${galleryVisible ? 'visible' : ''}`}>
         <h2 className="section-title">
           <span className="title-line"></span>
           Galería de Recuerdos
@@ -266,7 +310,7 @@ const LandingPage = () => {
           
           {/* Fotos subidas */}
           {allPhotos.slice(0, 5).map((photo) => (
-            <div key={photo.id} className="gallery-item">
+            <div key={photo.id} className="gallery-item" onClick={() => setLightboxPhoto(photo)}>
               <img 
                 src={getImageUrl(photo.publicId, { width: 300, height: 300 })} 
                 alt={photo.title || "Recuerdo"}
@@ -274,11 +318,17 @@ const LandingPage = () => {
               />
               <button 
                 className="delete-photo-btn"
-                onClick={() => handleDeletePhoto(photo.id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeletePhoto(photo.id);
+                }}
                 title="Eliminar foto"
               >
                 ✕
               </button>
+              <div className="photo-overlay">
+                <span>🔍 Ver</span>
+              </div>
             </div>
           ))}
           
@@ -301,32 +351,32 @@ const LandingPage = () => {
         )}
       </section>
 
-      {/* Contador de tiempo juntos */}
-      <section className="time-together">
-        <div className="time-card">
-          <h3>Tiempo juntos</h3>
+      {/* Contador de tiempo juntos con animación */}
+      <section ref={timeRef} className={`time-together scroll-reveal ${timeVisible ? 'visible' : ''}`}>
+        <div className="time-card card-3d">
+          <h3>Tiempo juntos 💓</h3>
           <div className="time-display">
             <div className="time-unit">
-              <span className="time-number">{timeTogether.days}</span>
+              <span className="time-number animated-number">{timeTogether.days}</span>
               <span className="time-label">Días</span>
             </div>
             <div className="time-separator">:</div>
             <div className="time-unit">
-              <span className="time-number">{String(timeTogether.hours).padStart(2, '0')}</span>
+              <span className="time-number animated-number">{String(timeTogether.hours).padStart(2, '0')}</span>
               <span className="time-label">Horas</span>
             </div>
             <div className="time-separator">:</div>
             <div className="time-unit">
-              <span className="time-number">{String(timeTogether.minutes).padStart(2, '0')}</span>
+              <span className="time-number animated-number">{String(timeTogether.minutes).padStart(2, '0')}</span>
               <span className="time-label">Minutos</span>
             </div>
             <div className="time-separator">:</div>
             <div className="time-unit">
-              <span className="time-number">{String(timeTogether.seconds).padStart(2, '0')}</span>
+              <span className="time-number animated-number pulse-seconds">{String(timeTogether.seconds).padStart(2, '0')}</span>
               <span className="time-label">Segundos</span>
             </div>
           </div>
-          <p className="time-message">¡Y contando! 💜</p>
+          <p className="time-message">¡Y contando! <span className="heartbeat">💓</span></p>
           <p className="time-start-date">Desde el 13 de diciembre de 2025</p>
         </div>
       </section>
@@ -336,12 +386,29 @@ const LandingPage = () => {
 
       {/* Footer */}
       <footer className="landing-footer">
-        <p>Hecho con 💜 para Samirita</p>
+        <p>Hecho con 💜 para Shamira</p>
         <p className="footer-year">2025</p>
       </footer>
 
       {/* Mensaje del día flotante */}
       <DailyMessage />
+
+      {/* Lightbox para fotos */}
+      {lightboxPhoto && (
+        <div className="lightbox-overlay" onClick={() => setLightboxPhoto(null)}>
+          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+            <button className="lightbox-close" onClick={() => setLightboxPhoto(null)}>✕</button>
+            <img 
+              src={getImageUrl(lightboxPhoto.publicId, { width: 1200, height: 1200 })} 
+              alt={lightboxPhoto.title || "Foto"}
+              className="lightbox-image"
+            />
+            {lightboxPhoto.title && (
+              <p className="lightbox-title">{lightboxPhoto.title}</p>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Panel de administración */}
       <AdminPanel 
@@ -355,6 +422,7 @@ const LandingPage = () => {
         timelineEvents={timelineEvents}
         onAddTimelineEvent={handleAddTimelineEvent}
         onDeleteTimelineEvent={handleDeleteTimelineEvent}
+        onEditTimelineEvent={handleEditTimelineEvent}
       />
     </div>
   );

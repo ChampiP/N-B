@@ -1,7 +1,7 @@
 // Configuración de Cloudinary
 export const cloudinaryConfig = {
   cloudName: 'dg6dlnbj5',
-  uploadPreset: 'samirita_fotos', // Debes crear este preset en Cloudinary
+  uploadPreset: 'shamira_fotos', // Debes crear este preset en Cloudinary
 };
 
 // URL base para imágenes

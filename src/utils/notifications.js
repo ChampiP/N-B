@@ -35,8 +35,8 @@ export const NotificationService = {
   sendLocalNotification: (title, options = {}) => {
     if (Notification.permission === 'granted') {
       const notification = new Notification(title, {
-        icon: '/icon-192.png',
-        badge: '/icon-192.png',
+        icon: '/icon-192.svg',
+        badge: '/icon-192.svg',
         vibrate: [100, 50, 100],
         ...options
       });
@@ -110,7 +110,7 @@ export const NotificationService = {
       Math.floor(Math.random() * NotificationService.loveMessages.length)
     ];
     
-    NotificationService.sendLocalNotification('💜 Samirita', {
+    NotificationService.sendLocalNotification('💜 Shamira', {
       body: randomMessage,
       tag: 'daily-love',
       requireInteraction: true,
@@ -153,6 +153,12 @@ export const NotificationService = {
       { id: 6, unlockDate: '2026-12-13', title: '🎂 Un Año de Amor' }
     ];
 
+    // Función para parsear fecha sin problemas de zona horaria
+    const parseDate = (dateStr) => {
+      const [year, month, day] = dateStr.split('-').map(Number);
+      return new Date(year, month - 1, day);
+    };
+
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
@@ -161,7 +167,7 @@ export const NotificationService = {
 
     // Buscar mensajes recién desbloqueados que no han sido notificados
     const newUnlocked = secretMessages.filter(msg => {
-      const unlockDate = new Date(msg.unlockDate);
+      const unlockDate = parseDate(msg.unlockDate);
       unlockDate.setHours(0, 0, 0, 0);
       return unlockDate.getTime() === today.getTime() && 
              !viewedMessages.includes(msg.id) && 

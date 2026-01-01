@@ -9,7 +9,7 @@ const reasons = [
   "Eres mi mejor amiga y mi amor 💜",
   "Me haces querer ser mejor persona cada día ✨",
   "Tu abrazo es mi lugar seguro 🏠",
-  "La manera en que me cuidas cuando estoy mal 🤒",
+  "La manera en que me cuidas 🤒",
   "Tu paciencia infinita conmigo 😅",
   "Amo cómo hueles (siempre) 🌸",
   "Tus ocurrencias random que me hacen reír 😂",
@@ -18,11 +18,10 @@ const reasons = [
   "Cómo te emocionas con las cosas pequeñas 🎁",
   "Tu valentía para enfrentar todo 💪",
   "Eres mi compañera de aventuras perfecta 🗺️",
-  "La forma en que bailas cuando crees que nadie ve 💃",
   "Tu corazón bondadoso con todos 💝",
   "Cómo me apoyas en todo lo que hago 🌟",
   "Tus mensajes buenos días que alegran mi mañana ☀️",
-  "Simplemente porque eres TÚ, mi Samirita 💜"
+  "Simplemente porque eres TÚ, mi Shamira 💜"
 ];
 
 const ReasonsCarousel = () => {

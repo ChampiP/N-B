@@ -1,11 +1,11 @@
-// Mensajes diarios para Samirita 💜
+// Mensajes diarios para Shamira 💜
 // Formato: { day: número del día del año (1-365), message: "tu mensaje", title: "título opcional" }
 
 export const dailyMessages = [
   // Enero (días 1-31)
-  { day: 1, title: "Año Nuevo", message: "Un nuevo año comienza y no hay nadie mejor con quien quiera vivirlo que contigo, Samirita. ¡Feliz año nuevo, mi amor! 💜" },
+  { day: 1, title: "Año Nuevo", message: "Un nuevo año comienza y no hay nadie mejor con quien quiera vivirlo que contigo, Shamira. ¡Feliz año nuevo, mi amor! 💜" },
   { day: 2, title: "Día 2", message: "Cada día a tu lado es un regalo. Hoy te recuerdo lo especial que eres para mí. 💕" },
-  { day: 3, title: "Día 3", message: "Tu sonrisa ilumina mis días más grises. Gracias por existir, Samirita. ✨" },
+  { day: 3, title: "Día 3", message: "Tu sonrisa ilumina mis días más grises. Gracias por existir, Shamira. ✨" },
   { day: 4, title: "Día 4", message: "Escríbeme tu mensaje aquí..." },
   { day: 5, title: "Día 5", message: "Escríbeme tu mensaje aquí..." },
   { day: 6, title: "Día 6", message: "Escríbeme tu mensaje aquí..." },
@@ -48,7 +48,7 @@ export const dailyMessages = [
   { day: 41, title: "Día 41", message: "Escríbeme tu mensaje aquí..." },
   { day: 42, title: "Día 42", message: "Escríbeme tu mensaje aquí..." },
   { day: 43, title: "Día 43", message: "Escríbeme tu mensaje aquí..." },
-  { day: 44, title: "San Valentín 💜", message: "Feliz día del amor, Samirita. Contigo cada día es especial, pero hoy quiero recordarte cuánto te amo. 💕" },
+  { day: 44, title: "San Valentín 💜", message: "Feliz día del amor, Shamira. Contigo cada día es especial, pero hoy quiero recordarte cuánto te amo. 💕" },
   { day: 45, title: "Día 45", message: "Escríbeme tu mensaje aquí..." },
   { day: 46, title: "Día 46", message: "Escríbeme tu mensaje aquí..." },
   { day: 47, title: "Día 47", message: "Escríbeme tu mensaje aquí..." },
@@ -383,13 +383,13 @@ export const dailyMessages = [
   { day: 356, title: "Día 356", message: "Escríbeme tu mensaje aquí..." },
   { day: 357, title: "Día 357", message: "Escríbeme tu mensaje aquí..." },
   { day: 358, title: "Día 358", message: "Escríbeme tu mensaje aquí..." },
-  { day: 359, title: "Navidad 🎄", message: "¡Feliz Navidad, Samirita! Eres el mejor regalo que la vida me pudo dar. Te amo. 💜" },
+  { day: 359, title: "Navidad 🎄", message: "¡Feliz Navidad, Shamira! Eres el mejor regalo que la vida me pudo dar. Te amo. 💜" },
   { day: 360, title: "Día 360", message: "Escríbeme tu mensaje aquí..." },
   { day: 361, title: "Día 361", message: "Escríbeme tu mensaje aquí..." },
   { day: 362, title: "Día 362", message: "Escríbeme tu mensaje aquí..." },
   { day: 363, title: "Día 363", message: "Escríbeme tu mensaje aquí..." },
-  { day: 364, title: "Día 364", message: "Hoy es el día 364, Samirita. Un día más para este hermoso viaje juntos. 💜" },
-  { day: 365, title: "Fin de Año 🎆", message: "Otro año termina a tu lado, Samirita. Gracias por cada momento, cada risa, cada abrazo. ¡Por muchos años más juntos! Te amo infinitamente. 💜" },
+  { day: 364, title: "Día 364", message: "Hoy es el día 364, Shamira. Un día más para este hermoso viaje juntos. 💜" },
+  { day: 365, title: "Fin de Año 🎆", message: "Otro año termina a tu lado, Shamira. Gracias por cada momento, cada risa, cada abrazo. ¡Por muchos años más juntos! Te amo infinitamente. 💜" },
 ];
 
 // Función para obtener el mensaje del día
@@ -401,7 +401,7 @@ export const getTodayMessage = () => {
   const dayOfYear = Math.floor(diff / oneDay);
   
   const todayMessage = dailyMessages.find(m => m.day === dayOfYear);
-  return todayMessage || { day: dayOfYear, title: "Mensaje del día", message: "Cada día contigo es especial, Samirita. 💜" };
+  return todayMessage || { day: dayOfYear, title: "Mensaje del día", message: "Cada día contigo es especial, Shamira. 💜" };
 };
 
 // Función para obtener la fecha formateada

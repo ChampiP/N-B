@@ -13,10 +13,12 @@ const AdminPanel = ({
   onSetHeroPhoto,
   timelineEvents,
   onAddTimelineEvent,
-  onDeleteTimelineEvent
+  onDeleteTimelineEvent,
+  onEditTimelineEvent
 }) => {
   const [activeTab, setActiveTab] = useState('photos');
   const [newEvent, setNewEvent] = useState({ date: '', title: '', description: '' });
+  const [editingEvent, setEditingEvent] = useState(null);
 
   if (!isOpen) return null;
 
@@ -28,6 +30,21 @@ const AdminPanel = ({
       });
       setNewEvent({ date: '', title: '', description: '' });
     }
+  };
+
+  const handleEditEvent = (event) => {
+    setEditingEvent({ ...event });
+  };
+
+  const handleSaveEdit = () => {
+    if (editingEvent && editingEvent.date && editingEvent.title) {
+      onEditTimelineEvent(editingEvent);
+      setEditingEvent(null);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingEvent(null);
   };
 
   return (
@@ -175,19 +192,59 @@ const AdminPanel = ({
                 ) : (
                   timelineEvents.map((event) => (
                     <div key={event.id} className="timeline-item">
-                      <div className="event-info">
-                        <span className="event-date">{event.date}</span>
-                        <span className="event-title">{event.title}</span>
-                        {event.description && (
-                          <span className="event-desc">{event.description}</span>
-                        )}
-                      </div>
-                      <button 
-                        className="delete-event-btn"
-                        onClick={() => onDeleteTimelineEvent(event.id)}
-                      >
-                        ✕
-                      </button>
+                      {editingEvent && editingEvent.id === event.id ? (
+                        // Modo edición
+                        <div className="edit-event-form">
+                          <input
+                            type="date"
+                            value={editingEvent.date}
+                            onChange={(e) => setEditingEvent({...editingEvent, date: e.target.value})}
+                          />
+                          <input
+                            type="text"
+                            value={editingEvent.title}
+                            onChange={(e) => setEditingEvent({...editingEvent, title: e.target.value})}
+                            placeholder="Título"
+                          />
+                          <input
+                            type="text"
+                            value={editingEvent.description || ''}
+                            onChange={(e) => setEditingEvent({...editingEvent, description: e.target.value})}
+                            placeholder="Descripción"
+                          />
+                          <div className="edit-actions">
+                            <button className="save-btn" onClick={handleSaveEdit}>💾 Guardar</button>
+                            <button className="cancel-btn" onClick={handleCancelEdit}>✕ Cancelar</button>
+                          </div>
+                        </div>
+                      ) : (
+                        // Modo visualización
+                        <>
+                          <div className="event-info">
+                            <span className="event-date">{event.date}</span>
+                            <span className="event-title">{event.title}</span>
+                            {event.description && (
+                              <span className="event-desc">{event.description}</span>
+                            )}
+                          </div>
+                          <div className="event-buttons">
+                            <button 
+                              className="edit-event-btn"
+                              onClick={() => handleEditEvent(event)}
+                              title="Editar"
+                            >
+                              ✏️
+                            </button>
+                            <button 
+                              className="delete-event-btn"
+                              onClick={() => onDeleteTimelineEvent(event.id)}
+                              title="Eliminar"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        </>
+                      )}
                     </div>
                   ))
                 )}
