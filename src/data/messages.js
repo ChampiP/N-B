@@ -5,7 +5,7 @@ export const dailyMessages = [
   // Enero (días 1-31)
   { day: 1, title: "Año Nuevo", message: "Un nuevo año comienza y no hay nadie mejor con quien quiera vivirlo que contigo, Shamira. ¡Feliz año nuevo, mi amor! 💜" },
   { day: 2, title: "Día 2", message: "Cada día a tu lado es un regalo. Hoy te recuerdo lo especial que eres para mí. 💕" },
-  { day: 3, title: "Día 3", message: "Tu sonrisa ilumina mis días más grises. Gracias por existir, Shamira. ✨" },
+  { day: 3, title: "Día 3", message: "Tu sonrisa ilumina mis días más grises. Gracias por existir, Noemi te amo ❤️. ✨" },
   { day: 4, title: "Día 4", message: "Escríbeme tu mensaje aquí..." },
   { day: 5, title: "Día 5", message: "Escríbeme tu mensaje aquí..." },
   { day: 6, title: "Día 6", message: "Escríbeme tu mensaje aquí..." },
@@ -388,8 +388,8 @@ export const dailyMessages = [
   { day: 361, title: "Día 361", message: "Escríbeme tu mensaje aquí..." },
   { day: 362, title: "Día 362", message: "Escríbeme tu mensaje aquí..." },
   { day: 363, title: "Día 363", message: "Escríbeme tu mensaje aquí..." },
-  { day: 364, title: "Día 364", message: "Hoy es el día 364, Shamira. Un día más para este hermoso viaje juntos. 💜" },
-  { day: 365, title: "Fin de Año 🎆", message: "Otro año termina a tu lado, Shamira. Gracias por cada momento, cada risa, cada abrazo. ¡Por muchos años más juntos! Te amo infinitamente. 💜" },
+  { day: 364, title: "Día 364", message: "Hoy es el día 364. Un día más para este hermoso viaje juntos. 💜" },
+  { day: 365, title: "Fin de Año 🎆", message: "Otro año termina a tu lado. Gracias por cada momento, cada risa, cada abrazo. ¡Por muchos años más juntos! Te amo infinitamente. 💜" },
 ];
 
 // Función para obtener el mensaje del día
@@ -401,7 +401,7 @@ export const getTodayMessage = () => {
   const dayOfYear = Math.floor(diff / oneDay);
   
   const todayMessage = dailyMessages.find(m => m.day === dayOfYear);
-  return todayMessage || { day: dayOfYear, title: "Mensaje del día", message: "Cada día contigo es especial, Shamira. 💜" };
+  return todayMessage || { day: dayOfYear, title: "Mensaje del día", message: "Cada día contigo es especial, . 💜" };
 };
 
 // Función para obtener la fecha formateada
