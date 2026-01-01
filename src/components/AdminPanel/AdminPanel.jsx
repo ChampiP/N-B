@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './AdminPanel.css';
 import PhotoUploader from '../PhotoUploader/PhotoUploader';
-import { getImageUrl } from '../../config/cloudinary';
+import { getImageUrl } from '../../config/imageUpload';
 
 const AdminPanel = ({ 
   isOpen, 

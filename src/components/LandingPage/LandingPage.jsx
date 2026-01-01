@@ -7,7 +7,7 @@ import SpotifyPlaylist from '../SpotifyPlaylist/SpotifyPlaylist';
 import ReasonsCarousel from '../ReasonsCarousel/ReasonsCarousel';
 import SecretMessages from '../SecretMessages/SecretMessages';
 import InstallApp from '../InstallApp/InstallApp';
-import { getImageUrl } from '../../config/cloudinary';
+import { getImageUrl } from '../../config/imageUpload';
 import { galleryPhotos } from '../../data/photos';
 import useScrollReveal, { useParallax } from '../../hooks/useScrollReveal';
 

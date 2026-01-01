@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { uploadImage } from '../../config/cloudinary';
+import { uploadImage } from '../../config/imageUpload';
 import { smartCompress } from '../../utils/imageCompressor';
 import './PhotoUploader.css';
 
